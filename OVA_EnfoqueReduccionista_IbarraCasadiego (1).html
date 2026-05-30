@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OVA · El Enfoque Reduccionista · TGS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS ──────────────────────────────────── */
+    :root {
+      --bg:       #0b0e14;
+      --surface:  #13171f;
+      --card:     #1a1f2b;
+      --border:   #252d3d;
+      --accent:   #e8c547;
+      --accent2:  #4fc3f7;
+      --accent3:  #ff6b6b;
+      --text:     #e8eaf0;
+      --muted:    #7a8299;
+      --font-head: 'Syne', sans-serif;
+      --font-serif:'DM Serif Display', serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    /* ─── RESET ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-head);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(11,14,20,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 56px;
+    }
+    .nav-logo {
+      font-size: .85rem; font-weight: 700; color: var(--accent);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 1.4rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: .78rem; letter-spacing: .05em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── SECTIONS ────────────────────────────────── */
+    section { padding: 5rem 1rem; max-width: 960px; margin: 0 auto; }
+
+    /* ─── HERO ────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; position: relative; overflow: hidden;
+      padding-top: 56px;
+      max-width: 100%;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(232,197,71,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,197,71,.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 20s linear infinite;
+    }
+    @keyframes gridMove { to { background-position: 40px 40px; } }
+    .hero-orb {
+      position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none;
+    }
+    .orb1 { width: 400px; height: 400px; background: rgba(232,197,71,.12); top: 10%; left: -5%; }
+    .orb2 { width: 300px; height: 300px; background: rgba(79,195,247,.1); bottom: 15%; right: -5%; }
+    .hero-tag {
+      font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--accent); border: 1px solid var(--accent);
+      padding: .3rem 1rem; border-radius: 2px; margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+      animation: fadeUp .8s ease both;
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      line-height: 1.05; color: var(--text);
+      position: relative; z-index: 1;
+      animation: fadeUp .8s .15s ease both;
+    }
+    .hero h1 em { color: var(--accent); font-style: italic; }
+    .hero-sub {
+      max-width: 580px; color: var(--muted); font-size: 1.05rem;
+      margin-top: 1.2rem; position: relative; z-index: 1;
+      animation: fadeUp .8s .3s ease both;
+    }
+    .hero-cta {
+      margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
+      justify-content: center; position: relative; z-index: 1;
+      animation: fadeUp .8s .45s ease both;
+    }
+    .btn {
+      padding: .7rem 1.8rem; border-radius: 3px; font-family: var(--font-head);
+      font-size: .85rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      cursor: pointer; text-decoration: none; transition: all .2s; border: none;
+    }
+    .btn-primary { background: var(--accent); color: #0b0e14; }
+    .btn-primary:hover { background: #f5d55a; transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .btn-outline:hover { background: rgba(232,197,71,.1); }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: var(--muted); font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      animation: fadeUp .8s .6s ease both;
+    }
+    .scroll-line {
+      width: 1px; height: 40px; background: linear-gradient(var(--accent), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ─── SECTION HEADERS ─────────────────────────── */
+    .section-label {
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: .5rem; font-family: var(--font-mono);
+    }
+    .section-title {
+      font-family: var(--font-serif); font-size: clamp(1.8rem, 4vw, 2.8rem);
+      line-height: 1.2; margin-bottom: 1rem;
+    }
+    .section-title em { color: var(--accent); font-style: italic; }
+    .section-desc { color: var(--muted); max-width: 640px; }
+    .divider { width: 48px; height: 3px; background: var(--accent); margin: 1.5rem 0; }
+
+    /* ─── CARDS ───────────────────────────────────── */
+    .card-grid { display: grid; gap: 1.2rem; margin-top: 2.5rem; }
+    .card-grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .card-grid-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 1.8rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .card-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .card h3 { font-size: 1.05rem; margin-bottom: .6rem; color: var(--accent); }
+    .card p { color: var(--muted); font-size: .9rem; }
+
+    /* ─── TIMELINE ────────────────────────────────── */
+    .timeline { position: relative; margin-top: 3rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 24px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(var(--accent), var(--accent2));
+    }
+    .tl-item {
+      display: flex; gap: 1.5rem; margin-bottom: 2.5rem; position: relative;
+    }
+    .tl-dot {
+      width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+      background: var(--card); border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: .75rem; color: var(--accent);
+      position: relative; z-index: 1;
+    }
+    .tl-body { flex: 1; }
+    .tl-year { font-family: var(--font-mono); font-size: .75rem; color: var(--accent2); margin-bottom: .25rem; }
+    .tl-body h4 { font-size: 1rem; margin-bottom: .4rem; }
+    .tl-body p { color: var(--muted); font-size: .88rem; }
+
+    /* ─── QUOTE ───────────────────────────────────── */
+    .quote-block {
+      border-left: 3px solid var(--accent);
+      padding: 1.5rem 2rem; margin: 2rem 0;
+      background: var(--card); border-radius: 0 6px 6px 0;
+    }
+    .quote-block blockquote {
+      font-family: var(--font-serif); font-size: 1.25rem; font-style: italic;
+      color: var(--text); margin-bottom: .6rem;
+    }
+    .quote-block cite { font-size: .8rem; color: var(--muted); font-family: var(--font-mono); }
+
+    /* ─── COMPARISON TABLE ────────────────────────── */
+    .table-wrap { overflow-x: auto; margin-top: 2rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    thead tr { background: var(--accent); color: #0b0e14; }
+    thead th { padding: .9rem 1.2rem; text-align: left; font-weight: 700; letter-spacing: .05em; }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .2s; }
+    tbody tr:hover { background: rgba(232,197,71,.04); }
+    tbody td { padding: .85rem 1.2rem; color: var(--muted); }
+    tbody td:first-child { color: var(--text); font-weight: 600; }
+
+    /* ─── ACCORDION ───────────────────────────────── */
+    .accordion { margin-top: 2rem; }
+    .acc-item { border: 1px solid var(--border); border-radius: 6px; margin-bottom: .75rem; overflow: hidden; }
+    .acc-btn {
+      width: 100%; background: var(--card); border: none; cursor: pointer;
+      color: var(--text); font-family: var(--font-head); font-size: .95rem; font-weight: 600;
+      padding: 1.1rem 1.4rem; text-align: left;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background .2s;
+    }
+    .acc-btn:hover { background: rgba(232,197,71,.06); }
+    .acc-btn span { color: var(--accent); font-size: 1.2rem; transition: transform .3s; }
+    .acc-btn.open span { transform: rotate(45deg); }
+    .acc-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s ease, padding .3s;
+      background: var(--surface);
+    }
+    .acc-body.open { max-height: 400px; padding: 1.2rem 1.4rem; }
+    .acc-body p { color: var(--muted); font-size: .9rem; }
+
+    /* ─── EXAMPLES ────────────────────────────────── */
+    .examples-grid { display: grid; gap: 1rem; margin-top: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .ex-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+      padding: 1.4rem; position: relative; overflow: hidden;
+    }
+    .ex-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .ex-card:nth-child(1)::before { background: var(--accent); }
+    .ex-card:nth-child(2)::before { background: var(--accent2); }
+    .ex-card:nth-child(3)::before { background: var(--accent3); }
+    .ex-card:nth-child(4)::before { background: #a78bfa; }
+    .ex-card:nth-child(5)::before { background: #34d399; }
+    .ex-card:nth-child(6)::before { background: #fb923c; }
+    .ex-label { font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem; font-family: var(--font-mono); }
+    .ex-card h4 { font-size: .95rem; margin-bottom: .5rem; }
+    .ex-card p { font-size: .83rem; color: var(--muted); }
+
+    /* ─── EXERCISE ────────────────────────────────── */
+    .exercise-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; margin-top: 1.5rem; }
+    .exercise-wrap h3 { color: var(--accent); margin-bottom: 1rem; font-size: 1rem; }
+    .ex-question { margin-bottom: 1.5rem; }
+    .ex-question p { font-size: .95rem; margin-bottom: .8rem; }
+    .ex-options { display: flex; flex-direction: column; gap: .5rem; }
+    .ex-opt {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+      padding: .7rem 1rem; cursor: pointer; font-family: var(--font-head); font-size: .88rem;
+      color: var(--text); text-align: left; transition: all .2s;
+    }
+    .ex-opt:hover { border-color: var(--accent2); background: rgba(79,195,247,.06); }
+    .ex-opt.correct { background: rgba(52,211,153,.12); border-color: #34d399; color: #34d399; }
+    .ex-opt.wrong   { background: rgba(255,107,107,.12); border-color: var(--accent3); color: var(--accent3); }
+    .feedback-msg { margin-top: .8rem; font-size: .85rem; padding: .6rem 1rem; border-radius: 4px; display: none; }
+    .feedback-msg.show { display: block; }
+    .feedback-msg.ok { background: rgba(52,211,153,.1); color: #34d399; border: 1px solid #34d399; }
+    .feedback-msg.bad { background: rgba(255,107,107,.1); color: var(--accent3); border: 1px solid var(--accent3); }
+    .reset-btn { margin-top: 1.2rem; }
+
+    /* ─── GAME 1: PUZZLE ──────────────────────────── */
+    .game-wrap {
+      background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+      padding: 2rem; margin-top: 1.5rem;
+    }
+    .game-title { color: var(--accent); font-size: 1rem; margin-bottom: .4rem; }
+    .game-subtitle { color: var(--muted); font-size: .85rem; margin-bottom: 1.5rem; }
+    /* Drag and Drop */
+    .drag-zone { display: flex; flex-wrap: wrap; gap: .6rem; min-height: 60px;
+      background: var(--surface); border: 2px dashed var(--border); border-radius: 6px; padding: 1rem; }
+    .drag-zone.over { border-color: var(--accent); background: rgba(232,197,71,.04); }
+    .drag-item {
+      padding: .45rem 1rem; background: var(--accent); color: #0b0e14;
+      border-radius: 4px; cursor: grab; font-size: .82rem; font-weight: 700;
+      user-select: none; transition: transform .15s;
+    }
+    .drag-item:active { cursor: grabbing; transform: scale(1.05); }
+    .drop-slots { display: flex; flex-direction: column; gap: .6rem; margin-top: 1rem; }
+    .drop-row { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+    .drop-label { color: var(--muted); font-size: .85rem; min-width: 180px; }
+    .drop-slot {
+      min-width: 140px; min-height: 36px;
+      background: var(--surface); border: 2px dashed var(--border);
+      border-radius: 4px; padding: .4rem .8rem;
+      font-size: .82rem; color: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .drop-slot.filled { border-style: solid; border-color: var(--accent2); color: var(--text); background: rgba(79,195,247,.08); }
+    .drop-slot.correct-slot { border-color: #34d399; background: rgba(52,211,153,.1); color: #34d399; }
+    .drop-slot.wrong-slot   { border-color: var(--accent3); background: rgba(255,107,107,.1); color: var(--accent3); }
+
+    /* ─── GAME 2: MEMORIA ─────────────────────────── */
+    .memory-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem;
+      margin-top: 1rem;
+    }
+    .mem-card {
+      aspect-ratio: 1; background: var(--surface); border: 2px solid var(--border);
+      border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; text-align: center; padding: .4rem; line-height: 1.3;
+      transition: all .25s; perspective: 600px; color: transparent;
+      user-select: none;
+    }
+    .mem-card.flipped { background: var(--card); border-color: var(--accent2); color: var(--text); font-weight: 600; }
+    .mem-card.matched { background: rgba(52,211,153,.12); border-color: #34d399; color: #34d399; cursor: default; }
+    .mem-stat { font-size: .82rem; color: var(--muted); margin-top: .6rem; font-family: var(--font-mono); }
+
+    /* ─── QUIZ ────────────────────────────────────── */
+    .quiz-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; }
+    .quiz-progress-bar { width: 100%; height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 1.5rem; }
+    .quiz-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s ease; }
+    .quiz-q-num { font-family: var(--font-mono); font-size: .7rem; color: var(--muted); margin-bottom: .5rem; }
+    .quiz-question { font-size: 1rem; margin-bottom: 1.2rem; font-weight: 600; }
+    .quiz-options { display: flex; flex-direction: column; gap: .55rem; }
+    .quiz-opt {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+      padding: .8rem 1.1rem; cursor: pointer; font-family: var(--font-head); font-size: .88rem;
+      color: var(--text); text-align: left; transition: all .2s;
+    }
+    .quiz-opt:hover:not(:disabled) { border-color: var(--accent); background: rgba(232,197,71,.06); }
+    .quiz-opt.q-correct { background: rgba(52,211,153,.12); border-color: #34d399; color: #34d399; }
+    .quiz-opt.q-wrong   { background: rgba(255,107,107,.12); border-color: var(--accent3); color: var(--accent3); }
+    .quiz-feedback { margin-top: 1rem; font-size: .85rem; color: var(--muted); min-height: 1.2em; }
+    .quiz-nav { display: flex; justify-content: flex-end; margin-top: 1.2rem; gap: .8rem; }
+    .quiz-result { text-align: center; padding: 2rem 1rem; }
+    .quiz-score { font-family: var(--font-serif); font-size: 3.5rem; color: var(--accent); }
+    .quiz-result p { color: var(--muted); margin-top: .6rem; }
+
+    /* ─── GAME 3: WORDSEARCH ──────────────────────── */
+    .ws-grid-wrap { overflow-x: auto; }
+    .ws-grid {
+      display: inline-grid;
+      gap: 2px; margin-top: 1rem;
+    }
+    .ws-cell {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: .78rem; font-weight: 700;
+      background: var(--surface); border: 1px solid var(--border);
+      cursor: pointer; border-radius: 3px; transition: background .15s;
+      color: var(--muted); text-transform: uppercase; user-select: none;
+    }
+    .ws-cell.selected { background: rgba(232,197,71,.25); border-color: var(--accent); color: var(--accent); }
+    .ws-cell.found    { background: rgba(79,195,247,.2); border-color: var(--accent2); color: var(--accent2); }
+    .ws-wordlist { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .ws-word {
+      font-family: var(--font-mono); font-size: .78rem; padding: .25rem .7rem;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 3px;
+      transition: all .3s;
+    }
+    .ws-word.found-word { border-color: var(--accent2); color: var(--accent2); text-decoration: line-through; }
+
+    /* ─── VIDEO SECTION ───────────────────────────── */
+    .video-grid { display: grid; gap: 1.5rem; margin-top: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .video-card {
+      border-radius: 8px; overflow: hidden; border: 1px solid var(--border);
+      transition: border-color .2s, transform .2s;
+    }
+    .video-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .video-thumb {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      background: #000; cursor: pointer;
+    }
+    .video-thumb img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; transition: opacity .3s;
+    }
+    .video-thumb:hover img { opacity: .75; }
+    .video-play-btn {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 60px; height: 60px; border-radius: 50%;
+      background: rgba(232,197,71,.92); display: flex; align-items: center; justify-content: center;
+      transition: background .2s, transform .2s; pointer-events: none;
+    }
+    .video-thumb:hover .video-play-btn { background: var(--accent); transform: translate(-50%,-50%) scale(1.1); }
+    .video-play-btn svg { width: 24px; height: 24px; fill: #0b0e14; margin-left: 3px; }
+    .video-duration {
+      position: absolute; bottom: 8px; right: 10px;
+      background: rgba(0,0,0,.75); color: #fff; font-size: .7rem;
+      font-family: var(--font-mono); padding: 2px 6px; border-radius: 3px;
+    }
+    .video-info { padding: 1rem; background: var(--card); }
+    .video-info h4 { font-size: .9rem; margin-bottom: .3rem; }
+    .video-info p  { font-size: .8rem; color: var(--muted); }
+    .video-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      margin-top: .6rem; font-size: .75rem; color: var(--accent);
+      text-decoration: none; font-family: var(--font-mono);
+      letter-spacing: .04em;
+    }
+    .video-link:hover { text-decoration: underline; }
+
+    /* ─── CREDITS ─────────────────────────────────── */
+    .credits-hero {
+      background: linear-gradient(135deg, var(--card) 0%, rgba(232,197,71,.06) 100%);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 2.5rem; text-align: center; margin-bottom: 2rem;
+    }
+    .credits-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--accent); color: #0b0e14;
+      font-family: var(--font-serif); font-size: 2rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+    }
+    .credits-name { font-size: 1.3rem; font-weight: 700; }
+    .credits-role { font-size: .82rem; color: var(--muted); margin-top: .3rem; font-family: var(--font-mono); }
+    .refs { margin-top: 2rem; }
+    .refs h3 { color: var(--accent); margin-bottom: 1rem; }
+    .ref-item {
+      border-left: 2px solid var(--border); padding: .6rem 1rem; margin-bottom: .6rem;
+      font-size: .83rem; color: var(--muted); transition: border-color .2s;
+    }
+    .ref-item:hover { border-color: var(--accent); }
+
+    /* ─── FOOTER ──────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border); text-align: center;
+      padding: 2rem; color: var(--muted); font-size: .78rem;
+    }
+
+    /* ─── SCROLL REVEAL ───────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── RESPONSIVE ──────────────────────────────── */
+    @media (max-width: 640px) {
+      nav { padding: 0 1rem; }
+      .nav-links { gap: .8rem; }
+      .nav-links a { font-size: .7rem; }
+      .timeline::before { left: 18px; }
+      .tl-dot { width: 36px; height: 36px; font-size: .65rem; }
+      .memory-grid { grid-template-columns: repeat(4, 1fr); }
+      .ws-cell { width: 26px; height: 26px; font-size: .65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">OVA · TGS</div>
+  <ul class="nav-links">
+    <li><a href="#contexto">Contexto</a></li>
+    <li><a href="#conceptos">Conceptos</a></li>
+    <li><a href="#ejemplos">Ejemplos</a></li>
+    <li><a href="#juegos">Juegos</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#creditos">Créditos</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="inicio">
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-tag">Teoría General de Sistemas · Unidad 10</div>
+  <h1>El Enfoque<br><em>Reduccionista</em></h1>
+  <p class="hero-sub">Comprender el todo a través de sus partes: fundamentos, historia y aplicaciones del reduccionismo en la ciencia y los sistemas.</p>
+  <div class="hero-cta">
+    <a href="#contexto" class="btn btn-primary">Comenzar a aprender</a>
+    <a href="#quiz" class="btn btn-outline">Ir al Quiz</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</div>
+
+<!-- CONTEXTUALIZACIÓN -->
+<section id="contexto">
+  <div class="reveal">
+    <p class="section-label">// 01 — Contextualización</p>
+    <h2 class="section-title">¿Qué es el <em>reduccionismo</em>?</h2>
+    <div class="divider"></div>
+    <p class="section-desc">El enfoque reduccionista es una estrategia metodológica y filosófica que busca comprender fenómenos complejos descomponiéndolos en sus partes más simples. Es uno de los pilares de la ciencia clásica y el punto de partida para entender la Teoría General de Sistemas.</p>
+  </div>
+
+  <div class="quote-block reveal" style="margin-top:2.5rem">
+    <blockquote>"Para entender el sistema, primero debemos entender sus componentes."</blockquote>
+    <cite>— Principio central del Reduccionismo Científico</cite>
+  </div>
+
+  <div class="card-grid card-grid-3 reveal">
+    <div class="card">
+      <div class="card-icon">🔬</div>
+      <h3>Análisis Causal</h3>
+      <p>Se identifican causas específicas para cada efecto, asumiendo relaciones lineales entre partes del sistema.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧩</div>
+      <h3>Descomposición</h3>
+      <p>El todo se fragmenta en unidades mínimas estudiables de forma aislada, facilitando la investigación especializada.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <h3>Mecanicismo</h3>
+      <p>El universo funciona como una máquina: comprender cada pieza implica comprender el funcionamiento global.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEPTOS Y TEORÍA -->
+<section id="conceptos" style="background: var(--surface); max-width:100%; padding: 5rem 1rem;">
+  <div style="max-width:960px; margin:0 auto">
+  <div class="reveal">
+    <p class="section-label">// 02 — Marco Conceptual</p>
+    <h2 class="section-title">Fundamentos <em>teóricos</em></h2>
+    <div class="divider"></div>
+  </div>
+
+  <!-- Timeline histórico -->
+  <div class="timeline reveal">
+    <div class="tl-item">
+      <div class="tl-dot">XVII</div>
+      <div class="tl-body">
+        <div class="tl-year">Siglo XVII</div>
+        <h4>René Descartes — El Mecanicismo</h4>
+        <p>En su obra <em>Discurso del Método</em> (1637), Descartes propone dividir cada problema en tantas partes como sea posible para resolverlo. Establece la base filosófica del reduccionismo moderno.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">XIX</div>
+      <div class="tl-body">
+        <div class="tl-year">Siglo XIX</div>
+        <h4>Positivismo — Auguste Comte</h4>
+        <p>El positivismo consolidó el reduccionismo como método científico dominante. Toda explicación válida debía basarse en hechos observables y en la descomposición analítica de fenómenos.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">XX</div>
+      <div class="tl-body">
+        <div class="tl-year">Siglo XX — Primer mitad</div>
+        <h4>Auge del Reduccionismo Científico</h4>
+        <p>La física cuántica, la química molecular y la biología genética alcanzaron avances extraordinarios aplicando el método reduccionista: descomponer materia en partículas, moléculas y genes.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">TGS</div>
+      <div class="tl-body">
+        <div class="tl-year">1950s — Reacción sistémica</div>
+        <h4>Ludwig von Bertalanffy — Crítica al Reduccionismo</h4>
+        <p>Bertalanffy argumentó que el reduccionismo es insuficiente para explicar fenómenos emergentes. Propuso la TGS como una alternativa que estudia las <em>relaciones</em> entre las partes, no solo las partes aisladas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion de conceptos clave -->
+  <div class="reveal" style="margin-top:3rem">
+    <p class="section-label">// Conceptos Clave</p>
+    <h3 style="font-family:var(--font-serif); font-size:1.6rem; margin-bottom:.5rem">Explorá los <em>términos esenciales</em></h3>
+    <div class="divider"></div>
+  </div>
+
+  <div class="accordion reveal">
+    <div class="acc-item">
+      <button class="acc-btn" onclick="toggleAcc(this)">
+        Reduccionismo Ontológico <span>+</span>
+      </button>
+      <div class="acc-body">
+        <p>Afirma que todos los fenómenos del mundo son en última instancia reducibles a entidades físicas fundamentales. Por ejemplo, la conciencia humana podría explicarse completamente por procesos neurológicos, los cuales se reducen a interacciones químicas, luego a físicas. Es la tesis más fuerte del reduccionismo.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-btn" onclick="toggleAcc(this)">
+        Reduccionismo Metodológico <span>+</span>
+      </button>
+      <div class="acc-body">
+        <p>No hace afirmaciones sobre la naturaleza de la realidad, sino sobre el método de investigación. Sostiene que la mejor estrategia para estudiar sistemas complejos es descomponerlos en partes más simples. Es la forma más aceptada y utilizada en la práctica científica cotidiana.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-btn" onclick="toggleAcc(this)">
+        Reduccionismo Teórico <span>+</span>
+      </button>
+      <div class="acc-body">
+        <p>Propone que las teorías de nivel superior (como la biología) pueden ser reducidas lógicamente a teorías de nivel inferior (como la química o física). Ejemplo: las leyes de la genética serían casos especiales de principios bioquímicos más generales.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-btn" onclick="toggleAcc(this)">
+        Límites del Reduccionismo <span>+</span>
+      </button>
+      <div class="acc-body">
+        <p>El reduccionismo falla cuando aparece la <strong>emergencia</strong>: propiedades del sistema que no existen en sus partes individuales. Por ejemplo, la conciencia no se puede explicar estudiando neuronas por separado. El reduccionismo tampoco captura bien los fenómenos no lineales, retroalimentación y autoorganización.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla comparativa -->
+  <div class="reveal" style="margin-top:3rem">
+    <p class="section-label">// Comparativa</p>
+    <h3 style="font-family:var(--font-serif); font-size:1.6rem; margin-bottom:.5rem">Reduccionismo <em>vs.</em> Enfoque Sistémico</h3>
+    <div class="divider"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>Enfoque Reduccionista</th>
+            <th>Enfoque Sistémico</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Unidad de análisis</td><td>Partes individuales</td><td>Relaciones entre partes</td></tr>
+          <tr><td>Método</td><td>Descomposición analítica</td><td>Síntesis integradora</td></tr>
+          <tr><td>Causalidad</td><td>Lineal (causa → efecto)</td><td>Circular (retroalimentación)</td></tr>
+          <tr><td>Fenómenos emergentes</td><td>No considerados</td><td>Centrales en el análisis</td></tr>
+          <tr><td>Aplicación ideal</td><td>Sistemas simples y lineales</td><td>Sistemas complejos adaptativos</td></tr>
+          <tr><td>Origen histórico</td><td>Descartes, Newton, siglo XVII</td><td>Bertalanffy, siglo XX</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- EJEMPLOS PRÁCTICOS -->
+<section id="ejemplos">
+  <div class="reveal">
+    <p class="section-label">// 03 — Casos Reales</p>
+    <h2 class="section-title">Ejemplos <em>aplicados</em></h2>
+    <div class="divider"></div>
+    <p class="section-desc">El reduccionismo tiene aplicaciones concretas en múltiples disciplinas. Aquí algunos casos paradigmáticos donde se ha aplicado con éxito y donde ha encontrado sus límites.</p>
+  </div>
+
+  <div class="examples-grid reveal">
+    <div class="ex-card">
+      <div class="ex-label">Biología Molecular</div>
+      <h4>🧬 Proyecto Genoma Humano</h4>
+      <p>Se descompuso el ADN en nucleótidos individuales para mapear cada gen. Reduccionismo aplicado con éxito para identificar genes específicos de enfermedades.</p>
+    </div>
+    <div class="ex-card">
+      <div class="ex-label">Física</div>
+      <h4>⚛️ Modelo Estándar de Partículas</h4>
+      <p>La materia se reduce a quarks, leptones y bosones. Cada fenómeno macroscópico es explicable en términos de interacciones entre partículas fundamentales.</p>
+    </div>
+    <div class="ex-card">
+      <div class="ex-label">Medicina</div>
+      <h4>💊 Farmacología Molecular</h4>
+      <p>Las enfermedades se estudian como disfunciones celulares o moleculares. Los fármacos actúan sobre receptores específicos, bajo lógica reduccionista.</p>
+    </div>
+    <div class="ex-card">
+      <div class="ex-label">Ingeniería</div>
+      <h4>🔧 Análisis de Fallos</h4>
+      <p>Un sistema falla porque una pieza falla. El diagnóstico mecánico descompone el sistema hasta identificar la pieza defectuosa exacta.</p>
+    </div>
+    <div class="ex-card">
+      <div class="ex-label">Límite — Economía</div>
+      <h4>📉 Crisis Económicas</h4>
+      <p>Estudiar agentes económicos individuales es insuficiente para predecir crisis sistémicas. El mercado como todo tiene propiedades emergentes no reducibles.</p>
+    </div>
+    <div class="ex-card">
+      <div class="ex-label">Límite — Neurociencia</div>
+      <h4>🧠 Consciencia Humana</h4>
+      <p>Conocer cada neurona no explica la experiencia subjetiva. El reduccionismo choca con el "problema difícil de la consciencia" (Chalmers, 1995).</p>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIOS -->
+<section id="ejercicios" style="background: var(--surface); max-width:100%; padding: 5rem 1rem;">
+  <div style="max-width:960px; margin:0 auto">
+  <div class="reveal">
+    <p class="section-label">// 04 — Ejercicios</p>
+    <h2 class="section-title">Practica lo <em>aprendido</em></h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="exercise-wrap reveal">
+    <h3>📝 Ejercicio 1 — Identificación de enfoque</h3>
+    <div class="ex-question" id="exQ1">
+      <p><strong>Situación:</strong> Un ingeniero industrial analiza por qué una línea de producción tiene baja eficiencia. Decide estudiar cada máquina por separado, medir su rendimiento individual y reparar las que presentan fallas. ¿Qué enfoque está aplicando?</p>
+      <div class="ex-options">
+        <button class="ex-opt" onclick="checkEx(this, true, 'ex1fb', '✅ ¡Correcto! El ingeniero descompone el sistema en partes (máquinas) y las estudia de forma individual. Esto es característico del enfoque reduccionista.')">A) Enfoque Reduccionista</button>
+        <button class="ex-opt" onclick="checkEx(this, false, 'ex1fb', '❌ Incorrecto. El enfoque sistémico estudiaría las interrelaciones entre máquinas, flujos de materiales, cuellos de botella y retroalimentación, no solo las piezas aisladas.')">B) Enfoque Sistémico</button>
+        <button class="ex-opt" onclick="checkEx(this, false, 'ex1fb', '❌ Incorrecto. El pensamiento complejo va más allá del reduccionismo e integra incertidumbre, emergencia y autoorganización.')">C) Pensamiento Complejo</button>
+      </div>
+      <div class="feedback-msg" id="ex1fb"></div>
+    </div>
+  </div>
+
+  <div class="exercise-wrap reveal" style="margin-top:1rem">
+    <h3>📝 Ejercicio 2 — Verdadero o Falso</h3>
+    <div class="ex-question">
+      <p><strong>Afirmación:</strong> Según el reduccionismo, el comportamiento de un ecosistema puede explicarse completamente estudiando cada especie de manera aislada, sin considerar sus interacciones.</p>
+      <div class="ex-options">
+        <button class="ex-opt" onclick="checkEx(this, true, 'ex2fb', '✅ ¡Correcto! Según la lógica reduccionista estricta, sí se afirmaría esto. Sin embargo, esto es precisamente una de sus limitaciones: ignora propiedades emergentes como la estabilidad del ecosistema o las cadenas tróficas.')">Verdadero (según el reduccionismo estricto)</button>
+        <button class="ex-opt" onclick="checkEx(this, false, 'ex2fb', '❌ Incorrecto. Aunque el reduccionismo tiene limitaciones reales, la afirmación correctamente describe la postura reduccionista estricta.')">Falso</button>
+      </div>
+      <div class="feedback-msg" id="ex2fb"></div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- JUEGOS -->
+<section id="juegos">
+  <div class="reveal">
+    <p class="section-label">// 05 — Actividades Interactivas</p>
+    <h2 class="section-title">Juegos de <em>aprendizaje</em></h2>
+    <div class="divider"></div>
+  </div>
+
+  <!-- JUEGO 1: ARRASTRAR Y SOLTAR -->
+  <div class="game-wrap reveal">
+    <p class="game-title">🎮 Juego 1 — Clasifica los ejemplos</p>
+    <p class="game-subtitle">Arrastra cada concepto a su categoría correcta: ¿es un ejemplo de Reduccionismo o del Enfoque Sistémico?</p>
+
+    <p style="font-size:.8rem; color:var(--muted); margin-bottom:.5rem;">Elementos para clasificar:</p>
+    <div class="drag-zone" id="dragSource" ondragover="event.preventDefault(); this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="dropBack(event)"></div>
+
+    <div class="drop-slots" style="margin-top:1.5rem">
+      <div class="drop-row">
+        <div class="drop-label">🔬 Reduccionismo</div>
+        <div class="drop-slot" id="slot-r1" ondragover="event.preventDefault()" ondrop="dropToSlot(event, 'slot-r1', 'r')">soltar aquí</div>
+        <div class="drop-slot" id="slot-r2" ondragover="event.preventDefault()" ondrop="dropToSlot(event, 'slot-r2', 'r')">soltar aquí</div>
+        <div class="drop-slot" id="slot-r3" ondragover="event.preventDefault()" ondrop="dropToSlot(event, 'slot-r3', 'r')">soltar aquí</div>
+      </div>
+      <div class="drop-row">
+        <div class="drop-label">🌐 Enfoque Sistémico</div>
+        <div class="drop-slot" id="slot-s1" ondragover="event.preventDefault()" ondrop="dropToSlot(event, 'slot-s1', 's')">soltar aquí</div>
+        <div class="drop-slot" id="slot-s2" ondragover="event.preventDefault()" ondrop="dropToSlot(event, 'slot-s2', 's')">soltar aquí</div>
+        <div class="drop-slot" id="slot-s3" ondragover="event.preventDefault()" ondrop="dropToSlot(event, 'slot-s3', 's')">soltar aquí</div>
+      </div>
+    </div>
+    <div style="display:flex; gap:.8rem; margin-top:1.2rem; flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="checkDrag()" style="font-size:.8rem; padding:.5rem 1.2rem;">✔ Verificar</button>
+      <button class="btn btn-outline" onclick="resetDrag()" style="font-size:.8rem; padding:.5rem 1.2rem;">↺ Reiniciar</button>
+    </div>
+    <div id="drag-feedback" style="margin-top:.8rem; font-size:.85rem; color:var(--muted);"></div>
+  </div>
+
+  <!-- JUEGO 2: MEMORIA -->
+  <div class="game-wrap reveal" style="margin-top:1.5rem">
+    <p class="game-title">🧠 Juego 2 — Memoria de Conceptos</p>
+    <p class="game-subtitle">Encuentra los pares: cada concepto tiene una definición. Memoriza y empareja.</p>
+    <div class="memory-grid" id="memGrid"></div>
+    <p class="mem-stat" id="memStat">Intentos: 0 | Pares encontrados: 0 / 6</p>
+    <button class="btn btn-outline reset-btn" onclick="initMemory()" style="font-size:.8rem; padding:.5rem 1.2rem; margin-top:.8rem;">↺ Reiniciar</button>
+  </div>
+
+  <!-- JUEGO 3: SOPA DE LETRAS -->
+  <div class="game-wrap reveal" style="margin-top:1.5rem">
+    <p class="game-title">🔤 Juego 3 — Sopa de Letras</p>
+    <p class="game-subtitle">Encuentra las palabras clave del Enfoque Reduccionista. Haz clic en las letras para seleccionarlas.</p>
+    <div class="ws-wordlist" id="wsList"></div>
+    <div class="ws-grid-wrap">
+      <div class="ws-grid" id="wsGrid"></div>
+    </div>
+    <div style="display:flex; gap:.8rem; margin-top:1rem; flex-wrap:wrap; align-items:center">
+      <button class="btn btn-outline" onclick="checkWS()" style="font-size:.8rem; padding:.5rem 1.2rem;">✔ Verificar selección</button>
+      <button class="btn btn-outline" onclick="initWordSearch()" style="font-size:.8rem; padding:.5rem 1.2rem;">↺ Reiniciar</button>
+      <span id="ws-feedback" style="font-size:.82rem; color:var(--muted);"></span>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos" style="background:var(--surface); max-width:100%; padding: 5rem 1rem;">
+  <div style="max-width:960px; margin:0 auto">
+  <div class="reveal">
+    <p class="section-label">// 06 — Recursos Audiovisuales</p>
+    <h2 class="section-title">Videos <em>relacionados</em></h2>
+    <div class="divider"></div>
+    <p class="section-desc">Materiales audiovisuales seleccionados para profundizar en el enfoque reduccionista y su relación con la Teoría General de Sistemas.</p>
+  </div>
+  <div class="video-grid reveal">
+    <!-- Video 1 -->
+    <div class="video-card">
+      <a href="https://www.youtube.com/watch?v=pObIjSNTQgA" target="_blank" rel="noopener" class="video-thumb" title="Ver video en YouTube">
+        <img src="https://img.youtube.com/vi/pObIjSNTQgA/hqdefault.jpg" alt="Miniatura: Reduccionismo vs Holismo" loading="lazy" />
+        <div class="video-play-btn">
+          <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+        <span class="video-duration">▶ YouTube</span>
+      </a>
+      <div class="video-info">
+        <h4>Reduccionismo vs Holismo</h4>
+        <p>Diferencias fundamentales entre los enfoques analíticos y la perspectiva sistémica.</p>
+        <a href="https://www.youtube.com/watch?v=pObIjSNTQgA" target="_blank" rel="noopener" class="video-link">
+          ↗ Abrir en YouTube
+        </a>
+      </div>
+    </div>
+    <!-- Video 2 -->
+    <div class="video-card">
+      <a href="https://www.youtube.com/watch?v=HEoRIm1VYiA" target="_blank" rel="noopener" class="video-thumb" title="Ver video en YouTube">
+        <img src="https://img.youtube.com/vi/HEoRIm1VYiA/hqdefault.jpg" alt="Miniatura: Teoría General de Sistemas" loading="lazy" />
+        <div class="video-play-btn">
+          <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+        <span class="video-duration">▶ YouTube</span>
+      </a>
+      <div class="video-info">
+        <h4>Teoría General de Sistemas</h4>
+        <p>Introducción a la TGS y su relación con el enfoque reduccionista y sistémico.</p>
+        <a href="https://www.youtube.com/watch?v=HEoRIm1VYiA" target="_blank" rel="noopener" class="video-link">
+          ↗ Abrir en YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="reveal">
+    <p class="section-label">// 07 — Evaluación</p>
+    <h2 class="section-title">Quiz <em>interactivo</em></h2>
+    <div class="divider"></div>
+    <p class="section-desc">Pon a prueba tus conocimientos sobre el Enfoque Reduccionista. 8 preguntas con puntaje automático.</p>
+  </div>
+  <div class="quiz-wrap reveal" style="margin-top:2rem" id="quizContainer">
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgress" style="width:0%"></div></div>
+    <div id="quizContent"></div>
+  </div>
+</section>
+
+<!-- CRÉDITOS -->
+<section id="creditos">
+  <div class="reveal">
+    <p class="section-label">// 08 — Autoría</p>
+    <h2 class="section-title">Créditos y <em>referencias</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="credits-hero reveal">
+    <div class="credits-avatar">I</div>
+    <div class="credits-name">Ibarra Casadiego Brahian Jose David</div>
+    <div class="credits-role">Estudiante · Proyecto N° 10 · Teoría General de Sistemas</div>
+    <div style="margin-top:1rem; font-size:.85rem; color:var(--muted);">Universidad Simón Bolívar · Sede Cúcuta</div>
+    <div style="margin-top:.3rem; font-size:.78rem; color:var(--muted); font-family:var(--font-mono);">
+      Asignatura: Teoría General de Sistemas (TGS) · Tema: El Enfoque Reduccionista
+    </div>
+  </div>
+
+  <div class="card-grid card-grid-3 reveal">
+    <div class="card">
+      <div class="card-icon">🛠️</div>
+      <h3>Herramientas usadas</h3>
+      <p>HTML5, CSS3, JavaScript Vanilla, Google Fonts. Desarrollado con asistencia de Claude AI (Anthropic).</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3>Objetivo</h3>
+      <p>OVA funcional, interactiva y didáctica sobre el Enfoque Reduccionista en el marco de la TGS.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📅</div>
+      <h3>Publicación</h3>
+      <p>Proyecto Final · Asignatura TGS · Universidad Simón Bolívar sede Cúcuta, 2025.</p>
+    </div>
+  </div>
+
+  <div class="refs reveal">
+    <h3>📚 Referencias Bibliográficas</h3>
+    <div class="ref-item">Bertalanffy, L. von (1968). <em>General System Theory: Foundations, Development, Applications.</em> George Braziller. Nueva York.</div>
+    <div class="ref-item">Descartes, R. (1637). <em>Discurso del Método.</em> (Ed. española: Alianza Editorial, 2011).</div>
+    <div class="ref-item">Chalmers, D. J. (1996). <em>The Conscious Mind: In Search of a Fundamental Theory.</em> Oxford University Press.</div>
+    <div class="ref-item">Checkland, P. (1981). <em>Systems Thinking, Systems Practice.</em> John Wiley & Sons. Chichester.</div>
+    <div class="ref-item">Morin, E. (1990). <em>Introduction à la pensée complexe.</em> ESF Éditeur. Paris. (Trad. esp.: Gedisa, 2007).</div>
+    <div class="ref-item">Oppenheimer, R. (1956). Analogy in science. <em>American Psychologist, 11</em>(3), 127–135.</div>
+    <div class="ref-item">Nagel, E. (1961). <em>The Structure of Science: Problems in the Logic of Scientific Explanation.</em> Harcourt, Brace & World.</div>
+  </div>
+</section>
+
+<footer>
+  <p>OVA · El Enfoque Reduccionista · Teoría General de Sistemas · Universidad Simón Bolívar</p>
+  <p style="margin-top:.3rem; color: rgba(122,130,153,.5);">Ibarra Casadiego Brahian Jose David · 2025</p>
+</footer>
+
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
+<script>
+/* ── SCROLL REVEAL ── */
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }});
+}, { threshold: 0.08 });
+revealEls.forEach(el => revealObs.observe(el));
+
+/* ── ACCORDION ── */
+function toggleAcc(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.acc-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.acc-btn').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { body.classList.add('open'); btn.classList.add('open'); }
+}
+
+/* ── EXERCISE ── */
+function checkEx(btn, correct, fbId, msg) {
+  const parent = btn.closest('.ex-question');
+  parent.querySelectorAll('.ex-opt').forEach(b => { b.disabled = true; b.style.cursor='default'; });
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  const fb = document.getElementById(fbId);
+  fb.textContent = msg;
+  fb.className = 'feedback-msg show ' + (correct ? 'ok' : 'bad');
+}
+
+/* ── DRAG AND DROP ── */
+const dragItems = [
+  { id:'dr1', text:'Estudiar neuronas aisladas', cat:'r' },
+  { id:'dr2', text:'Análisis de ADN por gen', cat:'r' },
+  { id:'dr3', text:'Reparar piezas del motor', cat:'r' },
+  { id:'dr4', text:'Retroalimentación del sistema', cat:'s' },
+  { id:'dr5', text:'Propiedades emergentes', cat:'s' },
+  { id:'dr6', text:'Red de relaciones causales', cat:'s' },
+];
+let dragState = {};
+
+function initDrag() {
+  dragState = {};
+  const src = document.getElementById('dragSource');
+  src.innerHTML = '';
+  dragItems.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'drag-item'; el.draggable = true;
+    el.id = item.id; el.textContent = item.text;
+    el.dataset.cat = item.cat;
+    el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', item.id); });
+    src.appendChild(el);
+  });
+  document.querySelectorAll('.drop-slot').forEach(slot => {
+    slot.textContent = 'soltar aquí';
+    slot.classList.remove('filled','correct-slot','wrong-slot');
+    slot.dataset.itemId = '';
+  });
+  document.getElementById('drag-feedback').textContent = '';
+}
+
+function dropToSlot(e, slotId, cat) {
+  e.preventDefault();
+  const itemId = e.dataTransfer.getData('text/plain');
+  const item = dragItems.find(i => i.id === itemId);
+  if (!item) return;
+  // Remove from other slot if present
+  document.querySelectorAll('.drop-slot').forEach(s => { if (s.dataset.itemId === itemId) { s.textContent = 'soltar aquí'; s.classList.remove('filled'); s.dataset.itemId = ''; }});
+  // Remove from source
+  const srcEl = document.getElementById(itemId);
+  if (srcEl) srcEl.remove();
+  const slot = document.getElementById(slotId);
+  // If slot has item, send back to source
+  if (slot.dataset.itemId) {
+    const prev = dragItems.find(i => i.id === slot.dataset.itemId);
+    if (prev) {
+      const el = document.createElement('div');
+      el.className = 'drag-item'; el.draggable = true;
+      el.id = prev.id; el.textContent = prev.text; el.dataset.cat = prev.cat;
+      el.addEventListener('dragstart', ev => { ev.dataTransfer.setData('text/plain', prev.id); });
+      document.getElementById('dragSource').appendChild(el);
+    }
+  }
+  slot.textContent = item.text;
+  slot.classList.add('filled'); slot.dataset.itemId = itemId;
+}
+
+function dropBack(e) {
+  e.preventDefault(); e.currentTarget.classList.remove('over');
+  const itemId = e.dataTransfer.getData('text/plain');
+  const item = dragItems.find(i => i.id === itemId);
+  if (!item) return;
+  document.querySelectorAll('.drop-slot').forEach(s => { if (s.dataset.itemId === itemId) { s.textContent = 'soltar aquí'; s.classList.remove('filled'); s.dataset.itemId = ''; }});
+  if (!document.getElementById(itemId)) {
+    const el = document.createElement('div');
+    el.className = 'drag-item'; el.draggable = true;
+    el.id = item.id; el.textContent = item.text; el.dataset.cat = item.cat;
+    el.addEventListener('dragstart', ev => { ev.dataTransfer.setData('text/plain', item.id); });
+    document.getElementById('dragSource').appendChild(el);
+  }
+}
+
+function checkDrag() {
+  let correct = 0, total = 0;
+  document.querySelectorAll('.drop-slot').forEach(slot => {
+    if (!slot.dataset.itemId) return;
+    total++;
+    const item = dragItems.find(i => i.id === slot.dataset.itemId);
+    const slotCat = slot.id.includes('-r') ? 'r' : 's';
+    if (item && item.cat === slotCat) { slot.classList.add('correct-slot'); correct++; }
+    else { slot.classList.add('wrong-slot'); }
+  });
+  const fb = document.getElementById('drag-feedback');
+  if (total === 0) { fb.textContent = '⚠️ Aún no has colocado ningún elemento.'; return; }
+  fb.textContent = correct === dragItems.length
+    ? `🎉 ¡Perfecto! Todos los elementos están correctamente clasificados.`
+    : `Has acertado ${correct} de ${total} elementos. Revisa los marcados en rojo.`;
+}
+
+function resetDrag() { initDrag(); }
+initDrag();
+
+/* ── MEMORY GAME ── */
+const memPairs = [
+  ['Reduccionismo','Divide para estudiar'],
+  ['Emergencia','Propiedad del todo'],
+  ['Descartes','Padre del método analítico'],
+  ['Bertalanffy','Fundador de la TGS'],
+  ['Holismo','Estudia el todo integrado'],
+  ['Mecanicismo','El mundo como máquina'],
+];
+let memCards = [], memFlipped = [], memMatched = [], memAttempts = 0;
+
+function shuffle(arr) { return arr.sort(() => Math.random() - .5); }
+
+function initMemory() {
+  const grid = document.getElementById('memGrid');
+  grid.innerHTML = '';
+  memFlipped = []; memMatched = []; memAttempts = 0;
+  const pairs = memPairs.flatMap(([a,b]) => [{text:a, pairId:a},{text:b, pairId:a}]);
+  memCards = shuffle(pairs);
+  memCards.forEach((card, i) => {
+    const el = document.createElement('div');
+    el.className = 'mem-card'; el.dataset.pairId = card.pairId; el.dataset.idx = i;
+    el.dataset.text = card.text; el.textContent = card.text;
+    el.addEventListener('click', () => flipMem(el));
+    grid.appendChild(el);
+  });
+  updateMemStat();
+}
+
+function flipMem(el) {
+  if (el.classList.contains('flipped') || el.classList.contains('matched') || memFlipped.length >= 2) return;
+  el.classList.add('flipped');
+  memFlipped.push(el);
+  if (memFlipped.length === 2) {
+    memAttempts++;
+    setTimeout(() => {
+      const [a,b] = memFlipped;
+      if (a.dataset.pairId === b.dataset.pairId && a !== b) {
+        a.classList.add('matched'); b.classList.add('matched');
+        memMatched.push(a.dataset.pairId);
+        if (memMatched.length === memPairs.length) {
+          setTimeout(() => document.getElementById('memStat').textContent = `🎉 ¡Completado en ${memAttempts} intentos!`, 300);
+        }
+      } else {
+        a.classList.remove('flipped'); b.classList.remove('flipped');
+      }
+      memFlipped = [];
+      updateMemStat();
+    }, 800);
+  }
+}
+
+function updateMemStat() {
+  document.getElementById('memStat').textContent = `Intentos: ${memAttempts} | Pares encontrados: ${memMatched.length} / ${memPairs.length}`;
+}
+initMemory();
+
+/* ── WORD SEARCH ── */
+const wsWords = ['REDUCCION','SISTEMA','DESCARTES','HOLISMO','ANALISIS','EMERGENCIA','CAUSALIDAD'];
+const ROWS = 10, COLS = 12;
+let wsGrid = [], wsSelected = [], wsFoundWords = [];
+
+function initWordSearch() {
+  wsGrid = Array.from({length:ROWS}, () => Array(COLS).fill(''));
+  wsSelected = []; wsFoundWords = [];
+  // Place words
+  const placed = [];
+  wsWords.forEach(word => {
+    let tries = 0;
+    while (tries < 200) {
+      const dir = Math.floor(Math.random()*3); // 0=H, 1=V, 2=diagonal
+      const row = Math.floor(Math.random()*ROWS);
+      const col = Math.floor(Math.random()*COLS);
+      const dr = dir===1?1:(dir===2?1:0), dc = dir===0?1:(dir===2?1:0);
+      const endR = row + dr*(word.length-1), endC = col + dc*(word.length-1);
+      if (endR>=ROWS||endC>=COLS){tries++;continue;}
+      let ok = true;
+      for(let i=0;i<word.length;i++){
+        const r=row+dr*i, c=col+dc*i;
+        if(wsGrid[r][c]!==''&&wsGrid[r][c]!==word[i]){ok=false;break;}
+      }
+      if(ok){
+        for(let i=0;i<word.length;i++){wsGrid[row+dr*i][col+dc*i]=word[i];}
+        placed.push({word,row,col,dr,dc});
+        break;
+      }
+      tries++;
+    }
+  });
+  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) if(!wsGrid[r][c]) wsGrid[r][c]=letters[Math.floor(Math.random()*letters.length)];
+  renderWS();
+  const list = document.getElementById('wsList');
+  list.innerHTML = wsWords.map(w=>`<span class="ws-word" id="ws-${w}">${w}</span>`).join('');
+  document.getElementById('ws-feedback').textContent = '';
+}
+
+function renderWS() {
+  const gridEl = document.getElementById('wsGrid');
+  gridEl.style.gridTemplateColumns = `repeat(${COLS}, 32px)`;
+  gridEl.innerHTML = '';
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+    const cell = document.createElement('div');
+    cell.className='ws-cell'; cell.textContent=wsGrid[r][c];
+    cell.dataset.r=r; cell.dataset.c=c;
+    const key=`${r}-${c}`;
+    cell.addEventListener('click',()=>toggleWsCell(cell,key));
+    gridEl.appendChild(cell);
+  }
+}
+
+function toggleWsCell(cell, key) {
+  if(cell.classList.contains('found')) return;
+  if(cell.classList.contains('selected')){
+    cell.classList.remove('selected');
+    wsSelected = wsSelected.filter(k=>k!==key);
+  } else {
+    cell.classList.add('selected');
+    wsSelected.push(key);
+  }
+}
+
+function checkWS() {
+  const selectedCoords = wsSelected.map(k=>k.split('-').map(Number));
+  for(const word of wsWords){
+    if(wsFoundWords.includes(word)) continue;
+    if(selectedCoords.length !== word.length) continue;
+    // Check if selected spells the word in order
+    let text = selectedCoords.map(([r,c])=>wsGrid[r][c]).join('');
+    if(text===word || text.split('').reverse().join('')===word){
+      wsFoundWords.push(word);
+      wsSelected.forEach(k=>{
+        document.querySelector(`.ws-cell[data-r="${k.split('-')[0]}"][data-c="${k.split('-')[1]}"]`)?.classList.add('found');
+      });
+      document.getElementById(`ws-${word}`)?.classList.add('found-word');
+      wsSelected=[];
+      document.querySelectorAll('.ws-cell.selected').forEach(c=>c.classList.remove('selected'));
+      const fb = document.getElementById('ws-feedback');
+      if(wsFoundWords.length===wsWords.length){fb.textContent='🎉 ¡Encontraste todas las palabras!';}
+      else{fb.textContent=`✅ "${word}" encontrada! (${wsFoundWords.length}/${wsWords.length})`;}
+      return;
+    }
+  }
+  document.getElementById('ws-feedback').textContent='❌ No forma ninguna palabra del listado. Intenta otra selección.';
+  wsSelected=[];
+  document.querySelectorAll('.ws-cell.selected').forEach(c=>c.classList.remove('selected'));
+}
+initWordSearch();
+
+/* ── QUIZ ── */
+const quizData = [
+  {q:'¿Quién es considerado el padre filosófico del reduccionismo moderno?', opts:['Ludwig von Bertalanffy','René Descartes','Auguste Comte','Norbert Wiener'], ans:1, exp:'René Descartes, en su "Discurso del Método" (1637), propuso dividir cada problema en partes pequeñas para resolverlo, siendo la base del reduccionismo.'},
+  {q:'¿Cuál es la principal estrategia metodológica del enfoque reduccionista?', opts:['Estudiar las relaciones entre componentes','Descomponer el sistema en sus partes más simples','Analizar propiedades emergentes','Observar el comportamiento global del sistema'], ans:1, exp:'El reduccionismo descompone el sistema en partes más simples para estudiarlas de forma aislada.'},
+  {q:'¿Qué término describe propiedades del sistema que NO existen en sus partes individuales?', opts:['Reducción','Mecanicismo','Emergencia','Causalidad lineal'], ans:2, exp:'La emergencia es el fenómeno por el cual el todo tiene propiedades que no pueden encontrarse en sus partes por separado.'},
+  {q:'¿Cuál de los siguientes es un LÍMITE del enfoque reduccionista?', opts:['No puede estudiar células individuales','No puede explicar propiedades emergentes','No se aplica en ingeniería','Solo funciona en física'], ans:1, exp:'El reduccionismo no puede explicar fenómenos emergentes, como la consciencia o las crisis económicas sistémicas.'},
+  {q:'¿En qué área científica el reduccionismo tuvo su mayor éxito en el siglo XX?', opts:['Economía conductual','Biología molecular y genética','Psicología social','Ecología sistémica'], ans:1, exp:'El Proyecto Genoma y la biología molecular son ejemplos paradigmáticos del reduccionismo exitoso.'},
+  {q:'Según Bertalanffy, ¿por qué el reduccionismo es insuficiente?', opts:['Porque es muy costoso en recursos','Porque ignora las relaciones e interacciones entre partes','Porque es muy antiguo','Porque solo funciona en experimentos de laboratorio'], ans:1, exp:'Bertalanffy argumentó que las interacciones y relaciones entre componentes generan comportamientos que no se pueden predecir estudiando las partes aisladas.'},
+  {q:'¿Cuál de estos conceptos está más ASOCIADO al enfoque reduccionista?', opts:['Retroalimentación','Autoorganización','Causalidad lineal','Holismo'], ans:2, exp:'La causalidad lineal (causa → efecto directo) es característica del pensamiento reduccionista.'},
+  {q:'¿Cómo se denomina la forma de reduccionismo que afirma que TODO lo existente puede explicarse en términos físicos fundamentales?', opts:['Reduccionismo metodológico','Reduccionismo teórico','Reduccionismo ontológico','Reduccionismo empírico'], ans:2, exp:'El reduccionismo ontológico es la tesis más fuerte: toda la realidad puede reducirse a entidades físicas fundamentales.'},
+];
+
+let qIdx = 0, score = 0, answered = false;
+
+function renderQuiz() {
+  if (qIdx >= quizData.length) { showResult(); return; }
+  answered = false;
+  const q = quizData[qIdx];
+  const fill = ((qIdx) / quizData.length) * 100;
+  document.getElementById('quizProgress').style.width = fill + '%';
+  document.getElementById('quizContent').innerHTML = `
+    <div class="quiz-q-num">Pregunta ${qIdx+1} de ${quizData.length}</div>
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-options">
+      ${q.opts.map((opt,i)=>`<button class="quiz-opt" onclick="answerQuiz(this,${i},${q.ans},'${q.exp.replace(/'/g,"\\'")}')"> ${String.fromCharCode(65+i)}) ${opt}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="qFeedback"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-primary" onclick="nextQuiz()" id="qNext" style="display:none; font-size:.8rem; padding:.5rem 1.4rem;">Siguiente →</button>
+    </div>`;
+}
+
+function answerQuiz(btn, idx, ans, exp) {
+  if (answered) return;
+  answered = true;
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.disabled = true);
+  opts[ans].classList.add('q-correct');
+  if (idx !== ans) { btn.classList.add('q-wrong'); }
+  else { score++; }
+  document.getElementById('qFeedback').textContent = (idx===ans ? '✅ ' : '❌ ') + exp;
+  document.getElementById('qNext').style.display = 'block';
+}
+
+function nextQuiz() { qIdx++; renderQuiz(); }
+
+function showResult() {
+  document.getElementById('quizProgress').style.width = '100%';
+  const pct = Math.round(score/quizData.length*100);
+  const msg = pct>=80?'¡Excelente dominio del tema! 🎓':pct>=60?'Buen trabajo, sigue repasando 📖':'Revisa el contenido de nuevo 🔄';
+  document.getElementById('quizContent').innerHTML = `
+    <div class="quiz-result">
+      <div class="quiz-score">${score}/${quizData.length}</div>
+      <p>${pct}% de respuestas correctas</p>
+      <p style="margin-top:.8rem; font-size:1rem;">${msg}</p>
+      <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top:1.5rem;">↺ Volver a intentar</button>
+    </div>`;
+}
+
+function restartQuiz() { qIdx=0; score=0; renderQuiz(); }
+renderQuiz();
+</script>
+</body>
+</html>
